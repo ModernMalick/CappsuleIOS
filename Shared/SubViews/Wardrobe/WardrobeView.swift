@@ -10,12 +10,15 @@ import SwiftUI
 struct WardrobeView: View {
 	
 	@Environment(\.managedObjectContext) private var viewContext
-	@FetchRequest(sortDescriptors: [])
-	private var articles: FetchedResults<Article>
 	
 	@State private var filteredType = ""
+	@State private var filteredWarmth = ""
+	@State private var filteredAvailability: Bool? = nil
 	
 	@State private var selectedType = Types.AnyType
+	@State private var selectedWarmth = Warmths.AnyWarmth
+	@State private var selectedAvailability = Availabilities.AnyAvailability
+	
 	@State var image: UIImage = UIImage(named: "logo").unsafelyUnwrapped
 	@State var showCaptureImageView: Bool = false
 	@State var newImage = false
@@ -44,7 +47,7 @@ struct WardrobeView: View {
 				}
 				Spacer()
 				HStack{
-					Picker("Warmth", selection: $selectedType){
+					Picker("Warmth", selection: $selectedWarmth){
 						Text("All Warmths")
 							.tag(Warmths.AnyWarmth)
 						Text("Light")
@@ -61,7 +64,7 @@ struct WardrobeView: View {
 				}
 				Spacer()
 				HStack{
-					Picker("Availability", selection: $selectedType){
+					Picker("Availability", selection: $selectedAvailability){
 						Text("All Availabilities")
 							.tag(Availabilities.AnyAvailability)
 						Text("Available")
@@ -77,21 +80,7 @@ struct WardrobeView: View {
 				Spacer()
 			}
 			Spacer()
-			if(articles.count > 0){
-				FilteredView(filter: filteredType)
-			} else {
-				Spacer()
-				Image("box")
-					.renderingMode(.template)
-					.resizable()
-					.foregroundColor(Color("ColorOnBackground"))
-					.frame(width: 250.0, height: 250.0)
-				Text("Wow, such empty")
-					.font(.largeTitle)
-				Text("Add outfits from the home screen !")
-					.font(.title3)
-					.foregroundColor(Color.gray)
-			}
+			FilteredView(filterType: filteredType, filterWarmth: filteredWarmth, filterAvailability: filteredAvailability)
 			Spacer()
 			Spacer()
 			HStack(){
@@ -120,6 +109,39 @@ struct WardrobeView: View {
 				saveVC()
 				newImage = false
 			}
+		} 
+		.onChange(of: selectedType){ value in
+			if(value == Types.Layer){
+				filteredType = "Layer"
+			} else if(value == Types.Top){
+				filteredType = "Top"
+			} else if(value == Types.Bottom){
+				filteredType = "Bottom"
+			} else if(value == Types.Shoes){
+				filteredType = "shoes"
+			} else {
+				filteredType = ""
+			}
+		}
+		.onChange(of: selectedWarmth){ value in
+			if(value == Warmths.Light){
+				filteredWarmth = "Light"
+			} else if(value == Warmths.Both){
+				filteredWarmth = "Both"
+			} else if(value == Warmths.Heavy){
+				filteredWarmth = "Heavy"
+			} else {
+				filteredWarmth = ""
+			}
+		}
+		.onChange(of: selectedAvailability){ value in
+			if(value == Availabilities.Available){
+				filteredAvailability = true
+			} else if(value == Availabilities.Unavailable){
+				filteredAvailability = false
+			} else {
+				filteredAvailability = nil
+			}
 		}
 	}
 	func addArticle(picture: UIImage){
@@ -128,14 +150,6 @@ struct WardrobeView: View {
 		newArticle.warmth = "Warmth not set"
 		newArticle.available = true
 		newArticle.image = picture.jpegData(compressionQuality: 1.0)
-	}
-	
-	func deleteArticle(at offsets: IndexSet){
-		for offset in offsets {
-			let article = articles[offset]
-			viewContext.delete(article)
-		}
-		saveVC()
 	}
 	
 	func saveVC(){
