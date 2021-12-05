@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D28AC9A27592E7B008AD890 /* ArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D28AC9927592E7B008AD890 /* ArticleView.swift */; };
+		9D551294275D62B300E4078D /* FilteredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D551293275D62B300E4078D /* FilteredView.swift */; };
 		9D5ADCAA2731B9A600AD85A0 /* CappsuleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5ADC9A2731B9A400AD85A0 /* CappsuleApp.swift */; };
 		9D5ADCAB2731B9A600AD85A0 /* CappsuleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5ADC9A2731B9A400AD85A0 /* CappsuleApp.swift */; };
 		9D5ADCAC2731B9A600AD85A0 /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5ADC9B2731B9A400AD85A0 /* FrameView.swift */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		9D28AC9927592E7B008AD890 /* ArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleView.swift; sourceTree = "<group>"; };
+		9D551293275D62B300E4078D /* FilteredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredView.swift; sourceTree = "<group>"; };
 		9D5ADC9A2731B9A400AD85A0 /* CappsuleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CappsuleApp.swift; sourceTree = "<group>"; };
 		9D5ADC9B2731B9A400AD85A0 /* FrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameView.swift; sourceTree = "<group>"; };
 		9D5ADC9C2731B9A600AD85A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				9D5ADCC32734789200AD85A0 /* Filters.swift */,
 				9D5ADCC52738175200AD85A0 /* Coordinator.swift */,
 				9D28AC9927592E7B008AD890 /* ArticleView.swift */,
+				9D551293275D62B300E4078D /* FilteredView.swift */,
 			);
 			path = Wardrobe;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				9D5ADCC62738175200AD85A0 /* Coordinator.swift in Sources */,
 				9D5ADCC42734789200AD85A0 /* Filters.swift in Sources */,
 				9D5ADCBB27333FEF00AD85A0 /* HomeView.swift in Sources */,
+				9D551294275D62B300E4078D /* FilteredView.swift in Sources */,
 				9D5ADCAC2731B9A600AD85A0 /* FrameView.swift in Sources */,
 				9D5ADCCE273D467E00AD85A0 /* Database.xcdatamodeld in Sources */,
 				9D5ADCBD2733404D00AD85A0 /* WardrobeView.swift in Sources */,

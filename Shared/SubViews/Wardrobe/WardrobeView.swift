@@ -10,20 +10,15 @@ import SwiftUI
 struct WardrobeView: View {
 	
 	@Environment(\.managedObjectContext) private var viewContext
-	@FetchRequest(sortDescriptors: [], predicate: NSPredicate(format: "type == %@", "Top"))
+	@FetchRequest(sortDescriptors: [])
 	private var articles: FetchedResults<Article>
 	
+	@State private var filteredType = ""
+	
 	@State private var selectedType = Types.AnyType
-	@State private var selectedWarmth = Warmths.AnyWarmth
-	@State private var selectedAvailability = Availabilities.AnyAvailability
-	
-	@State private var filteredType = "Top"
-	
-	@State var image: UIImage = UIImage(named: "logo")!
+	@State var image: UIImage = UIImage(named: "logo").unsafelyUnwrapped
 	@State var showCaptureImageView: Bool = false
 	@State var newImage = false
-	
-	@State var selectedArticle: Article?
 	
     var body: some View {
 		VStack(){
@@ -83,50 +78,7 @@ struct WardrobeView: View {
 			}
 			Spacer()
 			if(articles.count > 0){
-				List {
-					ForEach(articles) { article in
-						HStack(alignment: .top){
-							Image(uiImage: UIImage(data: article.image!)!)
-								.resizable()
-								.frame(width: 100.0, height: 100.0)
-								.border(Color("AccentLight"))
-							VStack(alignment: .leading){
-								Text(article.type!)
-								Spacer()
-								Text(article.warmth!)
-								HStack{
-									Text("Available")
-									Toggle("Available", isOn: Binding<Bool>(
-										get: {article.available},
-										set: {
-											article.available = $0
-											try? viewContext.save()
-										}))
-										.tint(Color("AccentLight"))
-										.labelsHidden()
-								}
-							}
-							.padding(.leading, 10.0)
-							Spacer()
-							Image("editing")
-								.renderingMode(.template)
-								.resizable()
-								.foregroundColor(Color.white)
-								.padding(10.0)
-								.frame(width: 48.0, height: 48.0)
-								.background(Color("AccentColor"))
-								.cornerRadius(7.5)
-								.onTapGesture {
-									self.selectedArticle = article
-								}
-						}
-						.padding(15.0)
-					}.onDelete(perform: deleteArticle)
-				}
-				.cornerRadius(15)
-				.sheet(item: self.$selectedArticle) {
-					ArticleView(article: $0)
-				}
+				FilteredView(filter: filteredType)
 			} else {
 				Spacer()
 				Image("box")
