@@ -12,11 +12,14 @@ struct FilteredView: View {
 	@Environment(\.managedObjectContext) private var viewContext
 	@FetchRequest var fetchRequest: FetchedResults<Article>
 	@State var selectedArticle: Article?
+	var filtered: Bool
 	
 	init(filterType: String, filterWarmth: String, filterAvailability: Bool?){
 		if(filterType == "" && filterWarmth == "" && filterAvailability == nil){
 			_fetchRequest = FetchRequest<Article>(sortDescriptors: [])
+			filtered = false
 		} else {
+			filtered = true
 			var predicates = [NSPredicate]()
 			if(filterType != ""){
 				predicates.append(NSPredicate(format: "type == %@", filterType))
@@ -87,9 +90,15 @@ struct FilteredView: View {
 				.frame(width: 250.0, height: 250.0)
 			Text("Wow, such empty")
 				.font(.largeTitle)
-			Text("Add articles with your camera !")
-				.font(.title3)
+			if(filtered){
+				Text("Try different filters !")
+					.font(.title3)
 				.foregroundColor(Color.gray)
+			} else {
+				Text("Add articles with your camera !")
+					.font(.title3)
+				.foregroundColor(Color.gray)
+			}
 		}
 	}
 	func deleteArticle(at offsets: IndexSet){
