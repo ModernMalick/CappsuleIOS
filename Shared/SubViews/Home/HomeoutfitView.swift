@@ -8,43 +8,79 @@
 import SwiftUI
 
 struct HomeOutfitView: View {
+	
+	@Environment(\.managedObjectContext) private var viewContext
+	@FetchRequest var fetchRequestLayer: FetchedResults<Article>
+	@FetchRequest var fetchRequestTop: FetchedResults<Article>
+	@FetchRequest var fetchRequestBottom: FetchedResults<Article>
+	@FetchRequest var fetchRequestShoes: FetchedResults<Article>
+	
+	init(selectedWarmth: String){
+		_fetchRequestLayer = FetchRequest<Article>(sortDescriptors: [], predicate: NSPredicate(format: "type == %@ AND available == true AND (warmth == %@ OR warmth == %@)", "Layer", "Both", selectedWarmth))
+		_fetchRequestTop = FetchRequest<Article>(sortDescriptors: [], predicate: NSPredicate(format: "type == %@  AND available == true AND (warmth == %@ OR warmth == %@)", "Top", "Both", selectedWarmth))
+		_fetchRequestBottom = FetchRequest<Article>(sortDescriptors: [], predicate: NSPredicate(format: "type == %@ AND available == true AND (warmth == %@ OR warmth == %@)", "Bottom", "Both", selectedWarmth))
+		_fetchRequestShoes = FetchRequest<Article>(sortDescriptors: [], predicate: NSPredicate(format: "type == %@ AND available == true AND (warmth == %@ OR warmth == %@)", "Shoes", "Both", selectedWarmth))
+	}
+	
     var body: some View {
 		VStack {
 			HStack{
-				Image("logo")
-					.resizable()
-					.frame(width: 150.0, height: 150.0)
+				if(fetchRequestLayer.count > 0){
+					Image(uiImage: UIImage(data: fetchRequestLayer.randomElement()!.image!)!)
+						.resizable()
+						.frame(width: 150.0, height: 150.0)
 					.border(Color("AccentLight"))
+				} else {
+					Image("logo")
+						.resizable()
+						.frame(width: 150.0, height: 150.0)
+					.border(Color("AccentLight"))
+				}
 				Spacer()
 					.frame(width: 30.0)
-				Image("logo")
-					.resizable()
-					.frame(width: 150.0, height: 150.0)
-					.border(Color("AccentLight"))
+				if(fetchRequestTop.count > 0){
+					Image(uiImage: UIImage(data: fetchRequestTop.randomElement()!.image!)!)
+						.resizable()
+						.frame(width: 150.0, height: 150.0)
+						.border(Color("AccentLight"))
+				} else {
+					Image("logo")
+						.resizable()
+						.frame(width: 150.0, height: 150.0)
+						.border(Color("AccentLight"))
+				}
 			}
 			Spacer()
 				.frame(height: 30.0)
 			HStack{
-				Image("logo")
-					.resizable()
-					.frame(width: 150.0, height: 150.0)
-					.border(Color("AccentLight"))
+				if(fetchRequestBottom.count > 0){
+					Image(uiImage: UIImage(data: fetchRequestBottom.randomElement()!.image!)!)
+						.resizable()
+						.frame(width: 150.0, height: 150.0)
+						.border(Color("AccentLight"))
+				} else {
+					Image("logo")
+						.resizable()
+						.frame(width: 150.0, height: 150.0)
+						.border(Color("AccentLight"))
+				}
 				Spacer()
 					.frame(width: 30.0)
-				Image("logo")
-					.resizable()
-					.frame(width: 150.0, height: 150.0)
-					.border(Color("AccentLight"))
+				if(fetchRequestShoes.count > 0){
+					Image(uiImage: UIImage(data: fetchRequestShoes.randomElement()!.image!)!)
+						.resizable()
+						.frame(width: 150.0, height: 150.0)
+						.border(Color("AccentLight"))
+				} else {
+					Image("logo")
+						.resizable()
+						.frame(width: 150.0, height: 150.0)
+						.border(Color("AccentLight"))
+				}
 			}
 		}
 		.padding(20.0)
 		.background(Color("ColorSurface"))
 		.cornerRadius(15)
-    }
-}
-
-struct HomeOutfitView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeOutfitView()
     }
 }

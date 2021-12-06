@@ -118,7 +118,7 @@ struct WardrobeView: View {
 			} else if(value == Types.Bottom){
 				filteredType = "Bottom"
 			} else if(value == Types.Shoes){
-				filteredType = "shoes"
+				filteredType = "Shoes"
 			} else {
 				filteredType = ""
 			}

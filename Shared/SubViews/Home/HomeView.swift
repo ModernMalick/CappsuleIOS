@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-		HomeOutfitView()
+		HomeOutfitView(selectedWarmth: "Heavy")
 	}
 }
 
