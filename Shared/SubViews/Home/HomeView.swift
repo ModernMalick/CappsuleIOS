@@ -11,8 +11,9 @@ struct HomeView: View {
 	
 	@State private var selectedWarmthHeavy = true
 	@State private var selectedWarmthFilter = "Heavy"
+	@State private var weatherDesc = ""
 	@State private var weatherlogo = "weather"
-	@State private var temperature = "9.18"
+	@State private var temperature = ""
 	@State private var unit = "C"
 	@State private var city = ""
 	private var apiKey = "d6ec42cf87a93d3d280eb8b3e98d8436"
@@ -46,7 +47,7 @@ struct HomeView: View {
 					Image("thermometer")
 						.renderingMode(.template)
 						.foregroundColor(Color("ColorOnBackground"))
-				}.onAppear(perform: getCity)
+				}.onAppear(perform: getWeather)
 				.padding(.horizontal, 10.0)
 				Spacer()
 			}
@@ -60,11 +61,7 @@ struct HomeView: View {
 					get: {selectedWarmthHeavy},
 					set: {
 						selectedWarmthHeavy = $0
-						if(selectedWarmthHeavy){
-							selectedWarmthFilter = "Heavy"
-						} else {
-							selectedWarmthFilter = "Light"
-						}
+						setWeather()
 					}))
 					.tint(Color("AccentLight"))
 				.labelsHidden()
@@ -80,7 +77,7 @@ struct HomeView: View {
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
-	func getCity(){
+	func getWeather(){
 		locationManager.geocoder.reverseGeocodeLocation(locationManager.lastLocation!, completionHandler:
 		{
 			placemarks, error -> Void in
@@ -91,10 +88,50 @@ struct HomeView: View {
 			city = cityName
 			let data = getData(city: city, unit: "metric", apiKey: apiKey)
 			fetchData(url:data) { (dict, error) in
-				print(dict.self?.keys as Any)
+				if let main = dict!["main"] as? NSDictionary {
+					if let temp = main["temp"] as? Double {
+						temperature = String(describing: temp)
+						if(temp < 20){
+							selectedWarmthHeavy = true
+						} else {
+							selectedWarmthHeavy = false
+						}
+						setWeather()
+					}
+				}
+				if let weather = dict!["weather"] as? [NSDictionary] {
+					if let weatherA = weather.first {
+						if let weatherMain = weatherA["main"] as? String {
+							weatherDesc = weatherMain
+							switch weatherDesc {
+								case "Thunderstorm", "Drizzle", "Rain":
+									weatherlogo = "rain"
+									
+								case "Snow":
+									weatherlogo = "snow"
+									
+								case "Clouds", "Mist", "Smoke", "Haze", "Dust", "Fog", "Sand", "Ash", "Squall", "Tornado":
+									weatherlogo = "cloudy"
+									
+								case "Clear":
+									weatherlogo = "sun"
+
+								default:
+									weatherlogo = "weather"
+							}
+						}
+					}
+				}
 			}
 		}
 		})
+	}
+	func setWeather(){
+		if(selectedWarmthHeavy){
+			selectedWarmthFilter = "Heavy"
+		} else {
+			selectedWarmthFilter = "Light"
+		}
 	}
 }
 
