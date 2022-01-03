@@ -16,6 +16,7 @@ struct HomeView: View {
 	@State private var temperature = ""
 	@State private var unit = "C"
 	@State private var city = ""
+	@State private var showMore = false
 	private var apiKey = "d6ec42cf87a93d3d280eb8b3e98d8436"
 	
 	@StateObject var locationManager = LocationManager()
@@ -74,6 +75,66 @@ struct HomeView: View {
 			Spacer()
 			HomeOutfitView(selectedWarmth: selectedWarmthFilter)
 			Spacer()
+			HStack{
+				Spacer()
+				if(!showMore){
+					Button(action: {
+						showMore.toggle()
+					}){
+						Image(systemName: "camera")
+							.scaleEffect(1.65)
+							.tint(Color.black)
+					}
+					.frame(width: 65, height: 65)
+					.background(Color("AccentLight"))
+					.cornerRadius(50)
+				} else {
+					VStack{
+						Button(action: {
+							showMore.toggle()
+						}){
+							Image(systemName: "square.and.arrow.up")
+								.scaleEffect(1.45)
+								.tint(Color.black)
+						}
+						.frame(width: 45, height: 45)
+						.background(Color("AccentLight"))
+						.cornerRadius(50)
+						Button(action: {
+							showMore.toggle()
+						}){
+							Image(systemName: "heart")
+								.scaleEffect(1.45)
+								.tint(Color.black)
+						}
+						.frame(width: 45, height: 45)
+						.background(Color("AccentLight"))
+						.cornerRadius(50)
+						Button(action: {
+							print("refresh")
+						}){
+							Image(systemName: "arrow.2.circlepath")
+								.scaleEffect(1.45)
+								.tint(Color.black)
+						}
+						.frame(width: 45, height: 45)
+						.background(Color("AccentLight"))
+						.cornerRadius(50)
+						Button(action: {
+							showMore.toggle()
+						}){
+							Image(systemName: "multiply")
+								.scaleEffect(2)
+								.tint(Color.black)
+						}
+						.frame(width: 65, height: 65)
+						.background(Color("AccentLight"))
+						.cornerRadius(50)
+					}
+				}
+			}
+			.padding(.trailing, 10.0)
+			.frame(maxWidth: .infinity)
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
