@@ -46,7 +46,12 @@ struct ArticleView: View {
 						.scaleEffect(0.65)
 						.foregroundColor(Color("AccentLight"))
 				}
+				.padding()
 				.frame(width: 300.0)
+				.background(Color("ColorSurface"))
+				.cornerRadius(15)
+				Spacer()
+					.frame(height: 25.0)
 				HStack{
 					Text("Warmth").foregroundColor(Color("AccentLight"))
 					Spacer()
@@ -65,7 +70,10 @@ struct ArticleView: View {
 						.scaleEffect(0.65)
 						.foregroundColor(Color("AccentLight"))
 				}
+				.padding()
 				.frame(width: 300.0)
+				.background(Color("ColorSurface"))
+				.cornerRadius(15)
 			}
 			Spacer()
 			HStack{
@@ -95,7 +103,8 @@ struct ArticleView: View {
 			}
 			.frame(width: 300.0)
 			Spacer()
-		}.onAppear {
+		}
+		.onAppear {
 			getArticleData()
 		}
 	}

@@ -6,7 +6,12 @@
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="warmth" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="Outfit" representedClassName="Outfit" syncable="YES" codeGenerationType="class">
+        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
     <elements>
         <element name="Article" positionX="-63" positionY="-18" width="128" height="89"/>
+        <element name="Outfit" positionX="-63" positionY="9" width="128" height="59"/>
     </elements>
 </model>

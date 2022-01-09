@@ -40,6 +40,9 @@ struct HomeView: View {
 	@State var items : [Any] = []
 	@State var shareSheet = false
 	
+	@State var saveSheet = false
+	@State var outfitImage : UIImage = UIImage.init(named: "logo")!
+	
     var body: some View {
 		ZStack{
 			VStack{
@@ -122,6 +125,8 @@ struct HomeView: View {
 							.background(Color("AccentLight"))
 							.cornerRadius(50)
 							Button(action: {
+								outfitImage = outfitView.snapshot()
+								saveSheet.toggle()
 								showMore.toggle()
 							}){
 								Image(systemName: "heart")
@@ -160,6 +165,9 @@ struct HomeView: View {
 		.padding(.all, 20.0)
 		.sheet(isPresented: $shareSheet, content: {
 			ShareSheet(items: items)
+		})
+		.sheet(isPresented: $saveSheet, content: {
+			SaveOutfitView(outfitImage)
 		})
 	}
 	func getWeather(){
@@ -223,6 +231,6 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+		HomeView()
     }
 }
