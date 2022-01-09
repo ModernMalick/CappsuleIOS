@@ -21,6 +21,10 @@ struct HomeView: View {
 	
 	@StateObject var locationManager = LocationManager()
 	
+	@State private var instanceID = 1;
+	
+	@ObservedObject var networkManager = NetworkManager()
+	
 	var userLatitude: String {
 		return "\(locationManager.lastLocation?.coordinate.latitude ?? 0)"
 	}
@@ -29,10 +33,17 @@ struct HomeView: View {
 		return "\(locationManager.lastLocation?.coordinate.longitude ?? 0)"
 	}
 	
+	var outfitView: some View {
+		HomeOutfitView(selectedWarmth: selectedWarmthFilter, instanceID: instanceID).equatable()
+	}
+	
+	@State var items : [Any] = []
+	@State var shareSheet = false
+	
     var body: some View {
 		ZStack{
 			VStack{
-				if(locationManager.statusString == "authorizedWhenInUse" || locationManager.statusString == "authorizedAlways"){
+				if((locationManager.statusString == "authorizedWhenInUse" || locationManager.statusString == "authorizedAlways") && networkManager.isConnected){
 					HStack(){
 						Image("location")
 							.renderingMode(.template)
@@ -74,7 +85,7 @@ struct HomeView: View {
 						.frame(width: 55.0)
 				}
 				Spacer()
-				HomeOutfitView(selectedWarmth: selectedWarmthFilter)
+				outfitView
 				Spacer()
 			}
 			.frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -86,7 +97,7 @@ struct HomeView: View {
 						Button(action: {
 							showMore.toggle()
 						}){
-							Image(systemName: "camera")
+							Image(systemName: "plus")
 								.scaleEffect(1.65)
 								.tint(Color.black)
 						}
@@ -96,6 +107,11 @@ struct HomeView: View {
 					} else {
 						VStack{
 							Button(action: {
+								let image = outfitView.snapshot()
+								items.removeAll()
+								items.append(image)
+								items.append("Shared via Cappsule")
+								shareSheet.toggle()
 								showMore.toggle()
 							}){
 								Image(systemName: "square.and.arrow.up")
@@ -116,7 +132,7 @@ struct HomeView: View {
 							.background(Color("AccentLight"))
 							.cornerRadius(50)
 							Button(action: {
-								showMore.toggle()
+								instanceID += 1
 							}){
 								Image(systemName: "arrow.2.circlepath")
 									.scaleEffect(1.45)
@@ -142,6 +158,9 @@ struct HomeView: View {
 			.frame(maxWidth: .infinity)
 		}
 		.padding(.all, 20.0)
+		.sheet(isPresented: $shareSheet, content: {
+			ShareSheet(items: items)
+		})
 	}
 	func getWeather(){
 		locationManager.geocoder.reverseGeocodeLocation(locationManager.lastLocation!, completionHandler:
@@ -198,6 +217,7 @@ struct HomeView: View {
 		} else {
 			selectedWarmthFilter = "Light"
 		}
+		instanceID += 1
 	}
 }
 

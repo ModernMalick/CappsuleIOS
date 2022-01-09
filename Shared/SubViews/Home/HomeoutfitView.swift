@@ -7,19 +7,25 @@
 
 import SwiftUI
 
-struct HomeOutfitView: View {
+struct HomeOutfitView: View, Equatable {
 	
+	static func == (lhs: Self, rhs: Self) -> Bool {
+		return lhs.instance == rhs.instance
+	}
+	
+	let instance: Int
 	@Environment(\.managedObjectContext) private var viewContext
 	@FetchRequest var fetchRequestLayer: FetchedResults<Article>
 	@FetchRequest var fetchRequestTop: FetchedResults<Article>
 	@FetchRequest var fetchRequestBottom: FetchedResults<Article>
 	@FetchRequest var fetchRequestShoes: FetchedResults<Article>
 	
-	init(selectedWarmth: String){
+	init(selectedWarmth: String, instanceID: Int){
 		_fetchRequestLayer = FetchRequest<Article>(sortDescriptors: [], predicate: NSPredicate(format: "type == %@ AND available == true AND (warmth == %@ OR warmth == %@)", "Layer", "Both", selectedWarmth))
 		_fetchRequestTop = FetchRequest<Article>(sortDescriptors: [], predicate: NSPredicate(format: "type == %@  AND available == true AND (warmth == %@ OR warmth == %@)", "Top", "Both", selectedWarmth))
 		_fetchRequestBottom = FetchRequest<Article>(sortDescriptors: [], predicate: NSPredicate(format: "type == %@ AND available == true AND (warmth == %@ OR warmth == %@)", "Bottom", "Both", selectedWarmth))
 		_fetchRequestShoes = FetchRequest<Article>(sortDescriptors: [], predicate: NSPredicate(format: "type == %@ AND available == true AND (warmth == %@ OR warmth == %@)", "Shoes", "Both", selectedWarmth))
+		instance = instanceID
 	}
 	
     var body: some View {
