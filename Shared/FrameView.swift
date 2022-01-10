@@ -51,13 +51,6 @@ struct FrameView: View {
 					}
 					.tag(1)
 					.frame(maxWidth: .infinity, maxHeight: .infinity)
-				OutfitsView()
-					.tabItem {
-						Image("clothes").renderingMode(.template)
-						Text("Outfits")
-					}
-					.tag(2)
-					.frame(maxWidth: .infinity, maxHeight: .infinity)
 				SettingsView()
 					.tabItem {
 						Image("settings").renderingMode(.template)

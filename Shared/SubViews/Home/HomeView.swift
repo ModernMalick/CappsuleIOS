@@ -96,68 +96,17 @@ struct HomeView: View {
 				Spacer()
 				VStack{
 					Spacer()
-					if(!showMore){
-						Button(action: {
-							showMore.toggle()
-						}){
-							Image(systemName: "plus")
-								.scaleEffect(1.65)
-								.tint(Color.black)
-						}
-						.frame(width: 65, height: 65)
-						.background(Color("AccentLight"))
-						.cornerRadius(50)
-					} else {
-						VStack{
-							Button(action: {
-								let image = outfitView.snapshot()
-								items.removeAll()
-								items.append(image)
-								items.append("Shared via Cappsule")
-								shareSheet.toggle()
-								showMore.toggle()
-							}){
-								Image(systemName: "square.and.arrow.up")
-									.scaleEffect(1.45)
-									.tint(Color.black)
-							}
-							.frame(width: 45, height: 45)
-							.background(Color("AccentLight"))
-							.cornerRadius(50)
-							Button(action: {
-								outfitImage = outfitView.snapshot()
-								saveSheet.toggle()
-								showMore.toggle()
-							}){
-								Image(systemName: "heart")
-									.scaleEffect(1.45)
-									.tint(Color.black)
-							}
-							.frame(width: 45, height: 45)
-							.background(Color("AccentLight"))
-							.cornerRadius(50)
-							Button(action: {
-								instanceID += 1
-							}){
-								Image(systemName: "arrow.2.circlepath")
-									.scaleEffect(1.45)
-									.tint(Color.black)
-							}
-							.frame(width: 45, height: 45)
-							.background(Color("AccentLight"))
-							.cornerRadius(50)
-							Button(action: {
-								showMore.toggle()
-							}){
-								Image(systemName: "multiply")
-									.scaleEffect(2)
-									.tint(Color.black)
-							}
-							.frame(width: 65, height: 65)
-							.background(Color("AccentLight"))
-							.cornerRadius(50)
-						}
+					Button(action: {
+						instanceID += 1
+					}){
+						Image(systemName: "arrow.2.circlepath")
+							.scaleEffect(1.65)
+							.tint(Color.black)
 					}
+					.frame(width: 65, height: 65)
+					.background(Color("AccentLight"))
+					.cornerRadius(50)
+					
 				}
 			}
 			.frame(maxWidth: .infinity)
