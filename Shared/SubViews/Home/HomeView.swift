@@ -14,7 +14,6 @@ struct HomeView: View {
 	@State private var weatherDesc = ""
 	@State private var weatherlogo = "weather"
 	@State private var temperature = ""
-	@State private var unit = "C"
 	@State private var city = ""
 	@State private var showMore = false
 	private var apiKey = "d6ec42cf87a93d3d280eb8b3e98d8436"
@@ -43,6 +42,11 @@ struct HomeView: View {
 	@State var saveSheet = false
 	@State var outfitImage : UIImage = UIImage.init(named: "logo")!
 	
+	@AppStorage("metric") private var useMetric = true
+	@AppStorage("minLight") private var minLight = 20
+	
+	@State private var unitSymbol = "C"
+	
     var body: some View {
 		ZStack{
 			VStack{
@@ -58,7 +62,7 @@ struct HomeView: View {
 							.resizable()
 							.frame(width: 60.0, height: 60.0)
 						Spacer()
-						Text(temperature + "°" + unit)
+						Text(temperature + "°" + unitSymbol)
 							.frame(width: 90.0, alignment: .trailing)
 						Image("thermometer")
 							.renderingMode(.template)
@@ -111,6 +115,9 @@ struct HomeView: View {
 			}
 			.frame(maxWidth: .infinity)
 		}
+		.onChange(of: locationManager.lastLocation) { newValue in
+			getWeather()
+		}
 		.padding(.all, 20.0)
 		.sheet(isPresented: $shareSheet, content: {
 			ShareSheet(items: items)
@@ -120,6 +127,7 @@ struct HomeView: View {
 		})
 	}
 	func getWeather(){
+		if(locationManager.lastLocation != nil){
 		locationManager.geocoder.reverseGeocodeLocation(locationManager.lastLocation!, completionHandler:
 		{
 			placemarks, error -> Void in
@@ -128,12 +136,20 @@ struct HomeView: View {
 		
 		if let cityName = placeMark.locality{
 			city = cityName
-			let data = getData(city: city, unit: "metric", apiKey: apiKey)
+			var unit = ""
+			if(useMetric){
+				unit = "metric"
+				unitSymbol = "C"
+			} else {
+				unit = "imperial"
+				unitSymbol = "F"
+			}
+			let data = getData(city: city, unit: unit, apiKey: apiKey)
 			fetchData(url:data) { (dict, error) in
 				if let main = dict!["main"] as? NSDictionary {
 					if let temp = main["temp"] as? Double {
 						temperature = String(describing: temp)
-						if(temp < 20){
+						if(temp < Double(minLight)){
 							selectedWarmthHeavy = true
 						} else {
 							selectedWarmthHeavy = false
@@ -166,7 +182,7 @@ struct HomeView: View {
 				}
 			}
 		}
-		})
+		})}
 	}
 	func setWeather(){
 		if(selectedWarmthHeavy){

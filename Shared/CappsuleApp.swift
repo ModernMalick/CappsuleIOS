@@ -11,11 +11,16 @@ import SwiftUI
 struct CappsuleApp: App {
 	
 	let persistenceContainer = PersistenceController.shared
+	@AppStorage("boarded") private var boarded = false
 	
     var body: some Scene {
 		WindowGroup {
-            FrameView()
-				.environment(\.managedObjectContext, persistenceContainer.container.viewContext)
+			if(boarded){
+				FrameView()
+					.environment(\.managedObjectContext, persistenceContainer.container.viewContext)
+			} else {
+				Welcome()
+			}
         }
     }
 }
