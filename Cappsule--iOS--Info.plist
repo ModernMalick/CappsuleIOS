@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>The gallery is used to let you store outfits</string>
-	<key>NSCameraUsageDescription</key>
-	<string>The camera is used to let you add your own clothing articles</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is used to provide weather relevant outfits</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -57,10 +57,13 @@ struct Welcome: View {
 						switch page {
 							case 2:
 								image = "explanation"
+								text = "Just take pictures of your clothes and categorize them to set it up !"
 							case 3:
 								image = "start"
+								text = "Cappsule will then suggest outfits based on your needs !"
 							default:
 								image = "welcome"
+								text = "Welcome to Cappsule, the e-wardrobe that dresses you !"
 						}
 					}
 					.frame(width: 100.0, height: 45.0)

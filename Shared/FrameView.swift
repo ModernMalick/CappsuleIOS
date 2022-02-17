@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import Purchases
 
 struct FrameView: View {
+	
+	@AppStorage("subbed") private var subbed = false
+	
 	var body: some View {
 		VStack{
 			logoView()
@@ -40,6 +44,16 @@ struct FrameView: View {
 				UITabBar.appearance().isTranslucent = false
 			}
 			.ignoresSafeArea()
+		}.onAppear(){
+			Purchases.shared.purchaserInfo { (info, error) in
+				if info?.entitlements["All access"]?.isActive == true {
+					subbed = true
+					print("True")
+				} else {
+					subbed = false
+					print("False")
+				}
+			}
 		}
 	}
 	
